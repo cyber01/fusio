@@ -2,11 +2,10 @@ language: php
 php:
   - 7.0
   - 7.1
+  - 7.2
 sudo: false
 services:
   - mysql
-  - memcached
-  - mongodb
 before_install:
   - phpenv config-rm xdebug.ini
   - mysql -e 'create database fusio;'

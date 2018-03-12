@@ -48,6 +48,23 @@ on building the actual business logic of your API.
 
   Fusio provides an API where new users can login or register a new account 
   through GitHub, Google, Facebook or through normal email registration.
+* **Logging**
+
+  All errors which occur in your endpoint are logged and are visible at the 
+  backend including all information from the request.
+* **Connection**
+
+  Fusio provides an `adapter`_ system to connect to external services. By 
+  default we provide the HTTP and SQL connection type but there are many other 
+  types available i.e. MongoDB, Amqp, Cassandra.
+* **Migration**
+
+  Fusio has a migration system which allows you to change the database schema
+  on deployment.
+* **Testing**
+
+  Fusio provides an api test case wherewith you can test every endpoint 
+  response without setting up a local web server.
 
 Basically with Fusio you only have to define the schema (request/response) of 
 your API endpoints and implement the business logic. All other aspects are 
@@ -56,9 +73,16 @@ covered by Fusio.
 Development
 -----------
 
-If you develop an API with Fusio you need to define a ``.fusio.yml`` deploy file 
-which specifies the available routes and actions of the system. This file can 
-be deployed with the following command:
+Fusio provides two ways to develop an API. The first way is to build API 
+endpoints only through the backend interface by using all available actions.
+Through this you can solve already many tasks especially through the usage of
+the `v8 action`_.
+
+The other way is to use the deploy mechanism. Through this you can use normal
+PHP files to implement your business logic and thus you have ability to use the
+complete PHP ecosystem. Therefor you need to define a ``.fusio.yml`` 
+`deploy file`_ which specifies the available routes and actions of the system. 
+This file can be deployed with the following command:
 
 .. code-block:: text
     
@@ -162,3 +186,17 @@ Documentation
 The documentation app simply provides an overview of all available endpoints. 
 It is possible to export the API definition into other schema formats like i.e. 
 Swagger. The app is located at ``/documentation/``.
+
+Swagger-UI
+^^^^^^^^^^
+
+.. image:: _static/swagger-ui.png
+
+The `swagger-ui`_ app renders a documentation based on the OpenAPI 
+specification. The app is located at `/swagger-ui/`.
+
+
+.. _adapter: http://www.fusio-project.org/adapter
+.. _v8 action: https://www.fusio-project.org/documentation/v8
+.. _deploy file: http://fusio.readthedocs.io/en/latest/deploy.html
+.. _swagger-ui: https://github.com/swagger-api/swagger-ui

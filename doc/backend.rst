@@ -2,6 +2,8 @@
 Backend
 =======
 
+.. image:: _static/backend.png
+
 This chapter contains information about the backend. The following pages are 
 extracted from the online help which is also available inside the backend app:
 
@@ -16,5 +18,4 @@ extracted from the online help which is also available inside the backend app:
    backend/routes
    backend/schema
    backend/scope
-   backend/template
    backend/user

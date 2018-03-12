@@ -35,7 +35,7 @@ class CollectionTest extends ApiTestCase
 {
     public function testDocumentation()
     {
-        $response = $this->sendRequest('http://127.0.0.1/doc/*/todo', 'GET', [
+        $response = $this->sendRequest('/doc/*/todo', 'GET', [
             'User-Agent'    => 'Fusio TestCase',
         ]);
 
@@ -136,15 +136,15 @@ class CollectionTest extends ApiTestCase
     "links": [
         {
             "rel": "openapi",
-            "href": "\/export\/openapi\/*\/todo"
+            "href": "\/index.php\/export\/openapi\/*\/todo"
         },
         {
             "rel": "swagger",
-            "href": "\/export\/swagger\/*\/todo"
+            "href": "\/index.php\/export\/swagger\/*\/todo"
         },
         {
             "rel": "raml",
-            "href": "\/export\/raml\/*\/todo"
+            "href": "\/index.php\/export\/raml\/*\/todo"
         }
     ]
 }
@@ -156,38 +156,111 @@ JSON;
 
     public function testGet()
     {
-        $response = $this->sendRequest('http://127.0.0.1/todo', 'GET', [
+        $response = $this->sendRequest('/todo', 'GET', [
             'User-Agent'    => 'Fusio TestCase',
         ]);
 
         $actual = (string) $response->getBody();
+        $actual = preg_replace('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', '0000-00-00 00:00:00', $actual);
         $expect = <<<'JSON'
 {
-    "totalResults": "4",
+    "totalResults": "31",
     "entry": [
         {
-            "id": "4",
+            "id": "1",
             "status": "1",
-            "title": "Task 4",
-            "insertDate": "2016-02-17 20:15:56"
-        },
-        {
-            "id": "3",
-            "status": "1",
-            "title": "Task 3",
-            "insertDate": "2016-02-17 20:15:55"
+            "title": "Task 1",
+            "insertDate": "0000-00-00 00:00:00"
         },
         {
             "id": "2",
             "status": "1",
             "title": "Task 2",
-            "insertDate": "2016-02-17 20:14:49"
+            "insertDate": "0000-00-00 00:00:00"
         },
         {
-            "id": "1",
+            "id": "3",
             "status": "1",
-            "title": "Task 1",
-            "insertDate": "2016-02-17 20:14:45"
+            "title": "Task 3",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "4",
+            "status": "1",
+            "title": "Task 4",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "5",
+            "status": "1",
+            "title": "Task 5",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "6",
+            "status": "1",
+            "title": "Task 6",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "7",
+            "status": "1",
+            "title": "Task 7",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "8",
+            "status": "1",
+            "title": "Task 8",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "9",
+            "status": "1",
+            "title": "Task 9",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "10",
+            "status": "1",
+            "title": "Task 10",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "11",
+            "status": "1",
+            "title": "Task 11",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "12",
+            "status": "1",
+            "title": "Task 12",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "13",
+            "status": "1",
+            "title": "Task 13",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "14",
+            "status": "1",
+            "title": "Task 14",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "15",
+            "status": "1",
+            "title": "Task 15",
+            "insertDate": "0000-00-00 00:00:00"
+        },
+        {
+            "id": "16",
+            "status": "1",
+            "title": "Task 16",
+            "insertDate": "0000-00-00 00:00:00"
         }
     ]
 }
@@ -200,7 +273,7 @@ JSON;
     public function testPost()
     {
         $body     = json_encode(['title' => 'foo']);
-        $response = $this->sendRequest('http://127.0.0.1/todo', 'POST', [
+        $response = $this->sendRequest('/todo', 'POST', [
             'User-Agent'    => 'Fusio TestCase',
             'Authorization' => 'Bearer da250526d583edabca8ac2f99e37ee39aa02a3c076c0edc6929095e20ca18dcf'
         ], $body);
@@ -220,7 +293,7 @@ JSON;
         $connection = Environment::getService('connector')->getConnection('Default-Connection');
         $actual = $connection->fetchAssoc('SELECT id, status, title FROM app_todo ORDER BY id DESC LIMIT 1');
         $expect = [
-            'id' => 5,
+            'id' => 32,
             'status' => 1,
             'title' => 'foo',
         ];
@@ -231,7 +304,7 @@ JSON;
     public function testPostInvalidPayload()
     {
         $body     = json_encode(['foo' => 'foo']);
-        $response = $this->sendRequest('http://127.0.0.1/todo', 'POST', [
+        $response = $this->sendRequest('/todo', 'POST', [
             'User-Agent'    => 'Fusio TestCase',
             'Authorization' => 'Bearer da250526d583edabca8ac2f99e37ee39aa02a3c076c0edc6929095e20ca18dcf'
         ], $body);
@@ -252,7 +325,7 @@ JSON;
     public function testPostWithoutAuthorization()
     {
         $body     = json_encode(['title' => 'foo']);
-        $response = $this->sendRequest('http://127.0.0.1/todo', 'POST', [
+        $response = $this->sendRequest('/todo', 'POST', [
             'User-Agent'    => 'Fusio TestCase',
         ], $body);
 
@@ -271,7 +344,7 @@ JSON;
 
     public function testPut()
     {
-        $response = $this->sendRequest('http://127.0.0.1/todo', 'PUT', [
+        $response = $this->sendRequest('/todo', 'PUT', [
             'User-Agent'    => 'Fusio TestCase',
         ]);
 
@@ -290,7 +363,7 @@ JSON;
 
     public function testDelete()
     {
-        $response = $this->sendRequest('http://127.0.0.1/todo', 'DELETE', [
+        $response = $this->sendRequest('/todo', 'DELETE', [
             'User-Agent'    => 'Fusio TestCase',
         ]);
 

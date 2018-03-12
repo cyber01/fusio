@@ -1,4 +1,116 @@
 
+### 1.1.0
+
+* Update dependencies
+* Add priority to routes so that the order of the routes in deployment is 
+  stable #120
+* Installer add preview option to show SQL queries #74
+* Add connection lifecycle and deployment interface to give a connection the 
+  possibility to execute additional logic on execution
+* Improved documentation
+
+### 1.0.0 (2018-01-13)
+
+* Updated dependencies
+* Improved tests and documentation
+
+### 1.0.0-RC8 (2018-01-03)
+
+* Update PSX framework to version 4.0
+* Add rate limit to deployment
+* Update developer app
+* Improve tests and use migration as fixture
+
+### 1.0.0-RC7 (2017-12-23)
+
+* Use dotenv config to load sensitive values from environment variables #110
+* Add missing help files
+
+### 1.0.0-RC6 (2017-12-14)
+
+* Update developer app
+* Summarize deploy status and improve deploy output #108
+* Improve deploy schema file resolving #107
+
+### 1.0.0-RC5 (2017-12-09)
+
+* Documentation handle schema array types #106
+* Fix logging of long request uris #105
+* Add config to specify expire time of refresh token #104
+* Allow schema scheme when deploying a json schema #103
+* Add upgrade check
+* Improve test cases
+* Add PHP 7.2 support
+
+### 1.0.0-RC4 (2017-11-27)
+
+* Backend app fix add responses
+* Improved http engine action
+* Allow array json structure in response #81
+
+### 1.0.0-RC3 (2017-11-19)
+
+* Fix materialize resource collection
+
+### 1.0.0-RC2 (2017-11-18)
+
+* Issue 401 http response code if access token is not valid #97
+* Add user_approval setting to control whether a user needs to verify an 
+  account through email #83
+* Add swagger-ui as app
+* Improve generated OpenAPI spec add security scope
+* Add listing filter to show only user routes by default
+* Trigger app.remove_token event on /authorization/revoke endpoint #94
+* Improved HTTP adapter add a content-type config field and parse form encoded 
+  responses #92
+* Fix proper handling of null values #84
+* Add header field to action designer #89
+* Backend scope load all assigned routes #90
+* Added apache example conf and update docs
+
+### 1.0.0-RC1 (2017-11-01)
+
+* Add action execute command #64
+* User service add check whether email already exists #80
+* User API proper handling of OPTIONS and HEAD requests #82
+* Fix update correct handling of changed backend routes #85
+* Internal API add config option to send CORS header
+
+### 0.9.9 (2017-10-15)
+
+* Update OAuth2 token endpoint handle OPTIONS request
+* Add query parameters to backend schema
+* Backend endpoints handle count parameter #67
+* Relaxed password requirements and make min pw length configurable #68
+* Allow email as user name login #66
+
+### 0.9.8 (2017-10-11)
+
+* Add config.yaml to deploy
+* Add system restore command
+* Improve HEAD and OPTIONS method handling 
+* Cronjob handle errors
+
+### 0.9.7 (2017-10-05)
+
+* Add cronjob service
+* Add a schema to every backend endpoint
+* Fix route path regexp validation #63
+* Update API doc
+
+### 0.9.6 (2017-09-25)
+
+* Improved documentation add backend api reference and action examples
+* Add PATCH method support
+* Update dependencies and prepare release
+
+### 0.9.5 (2017-09-09)
+
+* Add scopes per route #55
+* Add OAuth2 refresh token endpoint #16
+* Added static file processor
+* Case insensitive env vars replacement
+
 ### 0.9.4 (2017-08-26)
 
 * Added automatic engine detection

@@ -6,27 +6,27 @@
 # Contains all available routes of the app. Each route reference a yaml file 
 # which defines the request/response schema and the action which gets executed.
 # Documentation: http://fusio.readthedocs.io/en/latest/deploy.html#routes
-routes:
-  "/todo": !include resources/routes/todo/collection.yaml
-  "/todo/:todo_id": !include resources/routes/todo/entity.yaml
+routes: !include resources/routes.yaml
 
 # ------------------------------------------------------------------------------
 # Contains all available schema definitions. Each schema reference a json file
 # which contains a json schema. These schema names can be referenced in a route.
 # Documentation: http://fusio.readthedocs.io/en/latest/deploy.html#schema
-schema:
-  Todo: !include resources/schema/todo/entity.json
-  Todo-Collection: !include resources/schema/todo/collection.json
-  Message: !include resources/schema/message.json
+schema: !include resources/schemas.yaml
 
 # ------------------------------------------------------------------------------
-# Reference a yaml file which contains all available connections to remote 
-# services i.e. a database or mongodb connection. These connections can be used
-# inside an action to produce a response or insert data from a request. 
+# Contains all available connections to remote services i.e. a database or 
+# mongodb connection. These connections can be used inside an action to produce 
+# a response or insert data from a request. 
 # Documentation: http://fusio.readthedocs.io/en/latest/deploy.html#connection
 connection: !include resources/connections.yaml
 
 # ------------------------------------------------------------------------------
-# Reference a yaml file which contains migrations for a specific connection.
+# Contains migrations for specific connections.
 # Documentation: http://fusio.readthedocs.io/en/latest/deploy.html#migration
 migration: !include resources/migrations.yaml
+
+# ------------------------------------------------------------------------------
+# Contains general system settings
+# Documentation: http://fusio.readthedocs.io/en/latest/deploy.html#config
+config: !include resources/config.yaml

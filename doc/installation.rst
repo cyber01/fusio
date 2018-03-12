@@ -2,29 +2,27 @@
 Installation
 ============
 
-It is possible to install Fusio either through composer or install it manually.
-Place the project into the www directory of the web server.
+It is possible to install Fusio either through composer or manually file 
+download. Place the project into the www directory of the web server.
 
-Composer
-^^^^^^^^
+**Composer**
 
 .. code-block:: text
 
     composer create-project fusio/fusio
 
-Download
-^^^^^^^^
+**Download**
 
 https://github.com/apioo/fusio/releases
 
 Configuration
-^^^^^^^^^^^^^
+-------------
 
 * **Adjust the configuration file**
 
-  Open the file ``configuration.php`` in the Fusio directory and change the key 
-  ``psx_url`` to the domain pointing to the public folder. Also insert the 
-  database credentials to the ``psx_connection`` keys.
+  Open the file ``.env`` in the Fusio directory and change the key ``FUSIO_URL``
+  to the domain pointing to the public folder. Also insert the database 
+  credentials to the ``FUSIO_DB_*`` keys.
 * **Execute the installation command**
 
   The installation script inserts the Fusio database schema into the provided 
@@ -41,7 +39,7 @@ should see a API response that the installation was successful. The backend is
 available at ``/fusio/``.
 
 Docker
-^^^^^^
+------
 
 Alternatively it is also possible to setup a Fusio system through docker. This
 has the advantage that you automatically get a complete running Fusio system
@@ -58,8 +56,8 @@ are taken from the env variables ``FUSIO_BACKEND_USER``, ``FUSIO_BACKEND_EMAIL``
 and ``FUSIO_BACKEND_PW`` in the `docker-compose.yml`_. If you are planing to run 
 the container on the internet you MUST change these credentials.
 
-Configure web server
---------------------
+Web server
+----------
 
 It is recommended to setup a virtual host in your ``sites-available`` folder 
 which points to the public folder of Fusio. After this you also have to change 
@@ -76,9 +74,29 @@ Apache
 
     <VirtualHost *:80>
         ServerName api.acme.com
-        DocumentRoot /var/www/fusio/public/
-        ErrorLog /var/log/apache2/fusio-error.log
-        CustomLog /var/log/apache2/fusio-access.log combined
+        DocumentRoot /var/www/html/fusio/public
+    
+        <Directory /var/www/html/fusio/public>
+            Options FollowSymLinks
+            AllowOverride All
+            Require all granted
+    
+            # rewrite
+            RewriteEngine On
+            RewriteBase /
+    
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule (.*) /index.php/$1 [L]
+    
+            RewriteCond %{HTTP:Authorization} ^(.*)
+            RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+        </Directory>
+    
+        # log
+        LogLevel warn
+        ErrorLog ${APACHE_LOG_DIR}/fusio.error.log
+        CustomLog ${APACHE_LOG_DIR}/fusio.access.log combined
     </VirtualHost>
 
 You should enable the module ``mod_rewrite`` so that the .htaccess file in the 
@@ -87,6 +105,26 @@ directly into the virtual host which also increases performance. The htaccess
 contains an important rule which redirects the ``Authorization`` header to Fusio 
 which is otherwise removed. If the .htaccess file does not work please check 
 whether the ``AllowOverride`` directive is set correctly i.e. to ``All``.
+
+Shared-Hosting
+^^^^^^^^^^^^^^
+
+If you want to run Fusio on a shared-hosting environment it is possible but in 
+general not recommended since you can not properly configure the web server and
+access the CLI. Therefore you can not use the deploy command which simplifies
+development. The bigest problem of a shared hosting environment is that you can 
+not set the document root to the ``public/`` folder. If you place the following 
+``.htaccess`` file in the directory you can bypass this problem by redirecting 
+all requests to the ``public/`` folder.
+
+.. code-block:: text
+
+    RewriteEngine on
+    RewriteRule (.*) public/$1/
+
+While this may work many shared hosting provider have strict limitations of 
+specific PHP functions which are maybe used by Fusio and which produce other
+errors.
 
 Javascript V8
 -------------
@@ -125,16 +163,16 @@ most login errors in case you are not able to login at the backend:
   backend with no credentials the app should make an request to the 
   ``/backend/token`` endpoint which should return a JSON response i.e.: 
 
-  .. code-block:: json
+.. code-block:: json
 
-      { "error": "invalid_request", "error_description": "Credentials not available" }
+    { "error": "invalid_request", "error_description": "Credentials not available" }
 
   If this is the case your app is correctly configured. If this is not the case 
   you need to adjust the endpoint url at ``/public/fusio/index.htm`` i.e.:
 
-  .. code-block:: javascript
+.. code-block:: javascript
 
-      var fusioUrl = "http://localhost:8080/fusio/public/index.php/";
+    var fusioUrl = "http://localhost:8080/fusio/public/index.php/";
 
 * **Apache module mod_rewrite is not activated**
 
@@ -160,8 +198,8 @@ to the backend api and where you configure the system. The backend system
 contains the actual backend code providing the backend API and the API which you 
 create with the system.
 
-Backend system
-^^^^^^^^^^^^^^
+Server
+^^^^^^
 
 Fusio makes heavy use of composer. Because of that you can easily upgrade a 
 Fusio system with the following composer command.
@@ -183,8 +221,8 @@ updated the vendor folder:
 This gives Fusio the chance to adjust the database schema in case something has
 changed with a new release.
 
-Backend app
-^^^^^^^^^^^
+App
+^^^
 
 To update the backend app simply replace the javascript and css files from the 
 new release:
